@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  
+  --color-dark-bg: #050505;
+  --color-surface-card: #101010;
+  --color-accent-gold: #d4a574;
+  --color-text-secondary: #a0a0a0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 165, 116, 0.35);
+}
+
+/* Base custom styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  background-color: #050505;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Background Grid Overlay */
+.bg-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Mouse-following grid ripple glow */
+.grid-ripple-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(212, 165, 116, 0.035),
+    transparent 40%
+  );
+  transition: background 0.15s ease;
+}
+
+/* Noise Texture Overlay */
+.bg-noise {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  content: "";
+  opacity: 0.015;
+  z-index: 999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Radial Glow Orbs */
+.glow-orb {
+  filter: blur(140px);
+  mix-blend-mode: plus-lighter;
+  pointer-events: none;
+}
+
+/* Framer-style glow borders and panels */
+.premium-card {
+  background: #101010;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.premium-card:hover {
+  border-color: rgba(212, 165, 116, 0.2);
+  box-shadow: 0 10px 40px rgba(212, 165, 116, 0.04);
+}
+
+/* Glassmorphism theme utilities */
+@utility glass-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(12px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(120%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease !important;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+@utility glass-card-hover {
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 12px 40px 0 rgba(212, 165, 116, 0.06) !important;
+  }
+}
+
+@utility glass-subcard {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(8px) saturate(110%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(110%) !important;
+}
+
+/* Text glow utilities */
+.glow-text-gold {
+  text-shadow: 0 0 30px rgba(212, 165, 116, 0.25);
+}
+
+/* Oversized Cinematic Headers */
+.section-title-large {
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+}
+
+/* Cursor glow styling */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 165, 116, 0.045) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+}
