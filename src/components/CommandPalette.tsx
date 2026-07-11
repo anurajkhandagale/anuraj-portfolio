@@ -99,7 +99,7 @@ export function CommandPalette() {
       category: "External Links",
       action: () => {
         setIsOpen(false);
-        window.open("https://linkedin.com/in/anuraj-khandagale-10020732", "_blank");
+        window.open("https://linkedin.com/in/anuraj-khandagale-10020732b", "_blank");
       },
     },
     {

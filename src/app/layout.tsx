@@ -44,7 +44,7 @@ export default function RootLayout({
     "jobTitle": "Backend Software Engineer",
     "url": "https://github.com/anurajkhandagale",
     "sameAs": [
-      "https://linkedin.com/in/anuraj-khandagale-10020732",
+      "https://linkedin.com/in/anuraj-khandagale-10020732b",
       "https://github.com/anurajkhandagale"
     ],
     "alumniOf": {

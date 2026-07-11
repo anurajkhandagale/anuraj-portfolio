@@ -150,40 +150,34 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-4"
           >
-            <Magnetic strength={0.3}>
-              <button
-                onClick={() => scrollToSection("projects")}
-                className="px-6 py-3 rounded-xl bg-white hover:bg-slate-100 text-black font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer group"
-              >
-                View Projects
-                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </button>
-            </Magnetic>
-            <Magnetic strength={0.3}>
-              <a
-                href="https://drive.google.com/file/d/1bP35kJgJ5DAh4lbd8rfJPuJYUyc_gFS3/view?usp=drive_link"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => {
-                  if (typeof window !== "undefined") {
-                    window.dispatchEvent(new CustomEvent("recruiter-action", { detail: "resume" }));
-                  }
-                }}
-                className="px-6 py-3 rounded-xl border border-white/10 hover:border-white/20 bg-[#101010]/85 hover:bg-[#101010] text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer text-center"
-              >
-                <Download size={16} />
-                Download Resume
-              </a>
-            </Magnetic>
-            <Magnetic strength={0.3}>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="px-6 py-3 rounded-xl border border-[#d4a574]/20 hover:border-[#d4a574]/30 bg-[#d4a574]/10 text-[#d4a574] font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
-              >
-                <Mail size={16} />
-                Contact Me
-              </button>
-            </Magnetic>
+            <button
+              onClick={() => scrollToSection("projects")}
+              className="w-full sm:w-[190px] px-6 py-3 rounded-xl bg-white hover:bg-slate-100 text-black font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer group"
+            >
+              View Projects
+              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+            <a
+              href="https://drive.google.com/file/d/1bP35kJgJ5DAh4lbd8rfJPuJYUyc_gFS3/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("recruiter-action", { detail: "resume" }));
+                }
+              }}
+              className="w-full sm:w-[190px] px-6 py-3 rounded-xl border border-white/10 hover:border-white/20 bg-[#101010]/85 hover:bg-[#101010] text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer text-center"
+            >
+              <Download size={16} />
+              Download Resume
+            </a>
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="w-full sm:w-[190px] px-6 py-3 rounded-xl border border-[#d4a574]/20 hover:border-[#d4a574]/30 bg-[#d4a574]/10 text-[#d4a574] font-semibold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
+            >
+              <Mail size={16} />
+              Contact Me
+            </button>
           </motion.div>
 
           {/* Social connections */}
@@ -203,7 +197,7 @@ export function Hero() {
               <Github size={18} />
             </a>
             <a
-              href="https://linkedin.com/in/anuraj-khandagale-10020732"
+              href="https://linkedin.com/in/anuraj-khandagale-10020732b"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2.5 rounded-lg border border-white/5 hover:border-white/10 bg-[#101010]/50 hover:bg-[#101010] text-[#a0a0a0] hover:text-white transition-all"
@@ -215,9 +209,9 @@ export function Hero() {
         </div>
 
         {/* Right Side: Abstract Illustration & Profile Image with Mouse Parallax */}
-        <div className="lg:col-span-5 hidden lg:flex items-center justify-center relative w-full h-[500px]">
+        <div className="lg:col-span-5 flex items-center justify-center relative w-full h-[400px] sm:h-[500px] mt-8 lg:mt-0 max-[400px]:scale-[0.85] max-[360px]:scale-[0.75] transition-transform duration-300">
           {/* Static Parallax Container frame */}
-          <div className="relative w-[400px] h-[400px] flex items-center justify-center">
+          <div className="relative w-[500px] h-[400px] flex items-center justify-center">
             
             {/* Background Orb */}
             <motion.div
@@ -265,15 +259,15 @@ export function Hero() {
             />
 
             {/* Squircle Card Pop-out Portrait Container (Reference matching out-of-bounds layout) */}
-            <div className="relative w-[320px] h-[400px] flex items-end justify-center z-10 overflow-visible">
+            <div className="relative w-[440px] h-[380px] flex items-end justify-center z-10 overflow-visible">
               
-              {/* Back Card Shape with Blue-to-Dark Gradient (top shifted down to top-[155px] to start at the neck) */}
+              {/* Back Card Shape with Blue-to-Dark Gradient (top shifted down to top-[145px] to start at the neck) */}
               <motion.div
                 style={{ x: cardX, y: cardY }}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.7, delay: 0.2 }}
-                className="absolute inset-x-0 bottom-0 top-[155px] rounded-[38px] bg-gradient-to-b from-[#3a3535]/30 via-[#2a2525]/20 to-[#030712]/90 border border-white/20 shadow-2xl backdrop-blur-md z-10 overflow-hidden"
+                className="absolute inset-x-0 bottom-0 top-[145px] rounded-[38px] bg-gradient-to-b from-[#3a3535]/30 via-[#2a2525]/20 to-[#030712]/90 border border-white/20 shadow-2xl backdrop-blur-md z-10 overflow-hidden"
               />
 
               {/* Profile Image (Out-of-Bounds Pop-out with smooth bottom fade mask) */}
@@ -290,7 +284,7 @@ export function Hero() {
                 className="relative w-[280px] h-[380px] z-20 overflow-visible pointer-events-none select-none flex items-end justify-center"
               >
                 <Image
-                  src="/profile.png"
+                  src="/profile.webp"
                   alt="Anuraj Laxman Khandagale"
                   width={280}
                   height={380}

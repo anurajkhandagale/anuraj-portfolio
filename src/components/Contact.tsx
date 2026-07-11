@@ -73,8 +73,8 @@ export function Contact() {
     {
       icon: Linkedin,
       label: "LinkedIn",
-      value: "anuraj-khandagale-10020732",
-      href: "https://linkedin.com/in/anuraj-khandagale-10020732",
+      value: "anuraj-khandagale-10020732b",
+      href: "https://linkedin.com/in/anuraj-khandagale-10020732b",
       color: "text-amber-300/80 bg-amber-300/80/10",
     },
     {
@@ -294,8 +294,8 @@ export function Contact() {
                         name="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        className={`w-full px-4 py-2.5 rounded-lg border bg-[#050505] text-white text-sm outline-none focus:ring-1 focus:ring-[#d4a574] transition-colors ${
-                          errors.name ? "border-rose-500" : "border-white/10"
+                        className={`w-full px-4 py-2.5 rounded-lg border bg-slate-100/80 dark:bg-[#161618] text-slate-900 dark:text-white text-sm outline-none focus:ring-1 focus:ring-[#d4a574] transition-colors ${
+                          errors.name ? "border-rose-500" : "border-slate-200 dark:border-white/10"
                         }`}
                         placeholder="Enter your name"
                       />
@@ -316,8 +316,8 @@ export function Contact() {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className={`w-full px-4 py-2.5 rounded-lg border bg-[#050505] text-white text-sm outline-none focus:ring-1 focus:ring-[#d4a574] transition-colors ${
-                          errors.email ? "border-rose-500" : "border-white/10"
+                        className={`w-full px-4 py-2.5 rounded-lg border bg-slate-100/80 dark:bg-[#161618] text-slate-900 dark:text-white text-sm outline-none focus:ring-1 focus:ring-[#d4a574] transition-colors ${
+                          errors.email ? "border-rose-500" : "border-slate-200 dark:border-white/10"
                         }`}
                         placeholder="Enter your email"
                       />
@@ -339,7 +339,7 @@ export function Contact() {
                       name="subject"
                       value={formData.subject}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-2.5 rounded-lg border border-white/10 bg-[#050505] text-white text-sm outline-none focus:ring-1 focus:ring-[#d4a574] transition-colors"
+                      className="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-100/80 dark:bg-[#161618] text-slate-900 dark:text-white text-sm outline-none focus:ring-1 focus:ring-[#d4a574] transition-colors"
                       placeholder="Opportunities, Collaboration, etc."
                     />
                   </div>
@@ -354,8 +354,8 @@ export function Contact() {
                       value={formData.message}
                       onChange={handleInputChange}
                       rows={5}
-                      className={`w-full px-4 py-2.5 rounded-lg border bg-[#050505] text-white text-sm outline-none focus:ring-1 focus:ring-[#d4a574] transition-colors resize-none ${
-                        errors.message ? "border-rose-500" : "border-white/10"
+                      className={`w-full px-4 py-2.5 rounded-lg border bg-slate-100/80 dark:bg-[#161618] text-slate-900 dark:text-white text-sm outline-none focus:ring-1 focus:ring-[#d4a574] transition-colors resize-none ${
+                        errors.message ? "border-rose-500" : "border-slate-200 dark:border-white/10"
                       }`}
                       placeholder="Write your message here..."
                     />

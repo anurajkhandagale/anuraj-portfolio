@@ -281,7 +281,7 @@ export function Projects() {
                     </div>
 
                     {/* Impact Results */}
-                    <div className="grid grid-cols-3 gap-3 pt-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                       {project.results.map((res, rIdx) => (
                         <div
                           key={rIdx}
@@ -293,27 +293,7 @@ export function Projects() {
                         </div>
                       ))}
                     </div>
-
-                    {/* Action Bar */}
-                    <div className="flex items-center gap-3 pt-4 border-t border-white/5">
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-2.5 rounded-lg border border-white/10 hover:border-white/20 bg-white/10 hover:bg-white/15 backdrop-blur-sm text-xs font-semibold text-white transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
-                      >
-                        <Github size={14} />
-                        Code Repository
-                      </a>
-                      <a
-                        href={project.demoUrl}
-                        className="px-4 py-2.5 rounded-lg bg-[#d4a574] hover:bg-[#a0a0a0] text-xs font-semibold text-white transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
-                      >
-                        <ExternalLink size={14} />
-                        Live Demo
-                      </a>
-                    </div>
-
+                    {/* Action Bar Removed */}
                   </div>
 
                 </motion.div>

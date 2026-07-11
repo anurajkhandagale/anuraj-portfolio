@@ -46,7 +46,7 @@ export function Footer() {
             <Github size={16} />
           </a>
           <a
-            href="https://linkedin.com/in/anuraj-khandagale-10020732"
+            href="https://linkedin.com/in/anuraj-khandagale-10020732b"
             target="_blank"
             rel="noopener noreferrer"
             className="text-slate-400 hover:text-indigo-600 dark:text-slate-500 dark:hover:text-indigo-400 transition-colors"

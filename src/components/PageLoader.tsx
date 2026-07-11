@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
 
 interface PageLoaderProps {
   onComplete: () => void;
@@ -55,42 +56,42 @@ export function PageLoader({ onComplete }: PageLoaderProps) {
           }}
           className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#050505]"
         >
-          {/* Glowing particle fields behind the logo */}
-          <div className="absolute w-[250px] h-[250px] rounded-full bg-[#d4a574]/10 blur-3xl animate-pulse pointer-events-none" />
+          {/* Centered Brand Group */}
+          <div className="relative select-none">
+            
+            {/* Background Colorful Glow Circles (matching mockup) */}
+            {/* Mint circle (top left) */}
+            <div className="absolute w-[80px] h-[80px] rounded-full bg-[#3ddc97] opacity-60 blur-md -top-6 -left-8 z-0" />
+            {/* Purple circle (top right) */}
+            <div className="absolute w-[70px] h-[70px] rounded-full bg-[#c084fc] opacity-60 blur-md -top-4 -right-6 z-0" />
+            {/* Cyan/Blue circle (bottom center) */}
+            <div className="absolute w-[75px] h-[75px] rounded-full bg-[#38bdf8] opacity-60 blur-md -bottom-8 left-[60%] -translate-x-1/2 z-0" />
 
-          {/* Center Brand Group */}
-          <div className="relative flex flex-col items-center gap-6 z-10">
-            {/* Logo Container */}
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="w-24 h-24 rounded-full border border-white/10 flex items-center justify-center relative bg-[#101010]/80 shadow-2xl backdrop-blur-md"
-            >
-              {/* Outer rotating accent segments */}
-              <div className="absolute inset-0 rounded-full border border-[#d4a574]/30 border-dashed animate-spin-slow" />
+            {/* Frosted Glass Progress Card */}
+            <div className="relative w-[340px] px-7 py-6 rounded-[28px] loader-glass-card shadow-2xl z-10 overflow-hidden flex flex-col gap-5">
               
-              {/* Initials Text */}
-              <span className="font-mono text-3xl font-extrabold tracking-widest text-white pl-1 select-none">
-                AK
-              </span>
-            </motion.div>
-
-            {/* Percentage & Loading Bar */}
-            <div className="flex flex-col items-center gap-2 w-[160px]">
-              <span className="font-mono text-xs font-bold tracking-widest text-[#a0a0a0]">
-                {progress}%
-              </span>
+              {/* Progress Text & Close Icon */}
+              <div className="flex items-center justify-between">
+                <span className="font-sans text-sm font-extrabold tracking-wide text-white">
+                  Progress {progress}%
+                </span>
+                
+                {/* Visual mock close button */}
+                <div className="w-7 h-7 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/50">
+                  <X size={12} strokeWidth={2.5} />
+                </div>
+              </div>
               
               {/* Progress track */}
-              <div className="w-full h-[2px] bg-white/5 rounded-full overflow-hidden relative">
+              <div className="w-full h-2.5 bg-black/45 rounded-full overflow-hidden relative border border-white/5 shadow-inner">
                 <motion.div
-                  className="absolute inset-y-0 left-0 bg-[#d4a574]"
+                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#3ddc97] to-[#10b981] rounded-full"
                   style={{ width: `${progress}%` }}
                   transition={{ ease: "easeInOut" }}
                 />
               </div>
             </div>
+            
           </div>
 
           {/* Footer Metadata */}

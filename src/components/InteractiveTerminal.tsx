@@ -137,7 +137,7 @@ export function InteractiveTerminal() {
             <p><span className="text-indigo-400 font-bold">Email:</span> anurajkhandagale52a@gmail.com</p>
             <p><span className="text-indigo-400 font-bold">Phone:</span> Request via Email / Contact Form</p>
             <p><span className="text-indigo-400 font-bold">GitHub:</span> github.com/anurajkhandagale</p>
-            <p><span className="text-indigo-400 font-bold">LinkedIn:</span> linkedin.com/in/anuraj-khandagale-10020732</p>
+            <p><span className="text-indigo-400 font-bold">LinkedIn:</span> linkedin.com/in/anuraj-khandagale-10020732b</p>
           </div>
         );
         break;
