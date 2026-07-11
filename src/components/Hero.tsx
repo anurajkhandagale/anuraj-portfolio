@@ -53,6 +53,53 @@ export function Hero() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
+  // Mobile gyroscope tilt parallax effect
+  useEffect(() => {
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      const { beta, gamma } = e;
+      if (beta !== null && gamma !== null) {
+        // gamma is left-to-right tilt [-90, 90]
+        const clampedGamma = Math.max(-30, Math.min(30, gamma));
+        const normalizedX = clampedGamma / 30;
+
+        // beta is front-to-back tilt [-180, 180]
+        const clampedBeta = Math.max(30, Math.min(90, beta));
+        const normalizedY = (clampedBeta - 60) / 30; // offset around 60 degrees
+
+        mouseX.set(normalizedX);
+        mouseY.set(normalizedY);
+      }
+    };
+
+    const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+    if (isMobile) {
+      if (
+        typeof DeviceOrientationEvent !== "undefined" &&
+        // @ts-ignore
+        typeof DeviceOrientationEvent.requestPermission === "function"
+      ) {
+        const requestiOSPermission = () => {
+          // @ts-ignore
+          DeviceOrientationEvent.requestPermission()
+            .then((permissionState: string) => {
+              if (permissionState === "granted") {
+                window.addEventListener("deviceorientation", handleOrientation);
+              }
+            })
+            .catch(console.error);
+          window.removeEventListener("touchend", requestiOSPermission);
+        };
+        window.addEventListener("touchend", requestiOSPermission);
+      } else {
+        window.addEventListener("deviceorientation", handleOrientation);
+      }
+    }
+
+    return () => {
+      window.removeEventListener("deviceorientation", handleOrientation);
+    };
+  }, [mouseX, mouseY]);
+
   // Easing springs for the right-side abstract art elements
   const springX = useSpring(mouseX, { damping: 45, stiffness: 180 });
   const springY = useSpring(mouseY, { damping: 45, stiffness: 180 });
