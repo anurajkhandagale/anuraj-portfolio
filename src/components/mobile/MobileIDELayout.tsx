@@ -5,6 +5,7 @@ import { MobileTopBar } from "./MobileTopBar";
 import { MobileBottomNav, MobileTab } from "./MobileBottomNav";
 import { MobileHomeView } from "./MobileHomeView";
 import { MobileProjectsView } from "./MobileProjectsView";
+import { MobileSkillsView } from "./MobileSkillsView";
 import { MobileCodeView } from "./MobileCodeView";
 import { MobileGitView } from "./MobileGitView";
 import { MobileFileDrawer } from "./MobileFileDrawer";
@@ -49,11 +50,13 @@ export function MobileIDELayout({
     switch (fileId) {
       case "readme":
         return "README.md";
+      case "say-it-speech":
+        return "SayItSpeechEngine.java";
       case "pit-stop-live":
         return "PitStopLive.java";
       case "ai-email-generator":
         return "AiEmailGenerator.java";
-      case "student-management":
+      case "student-management-system":
         return "StudentManagementSystem.java";
       case "java-core":
         return "Java.java";
@@ -61,7 +64,7 @@ export function MobileIDELayout({
         return "SpringBoot.java";
       case "databases":
         return "Databases.java";
-      case "dsa-core":
+      case "cs-core":
         return "ComputerScienceCore.java";
       case "pom":
         return "pom.xml";
@@ -100,18 +103,16 @@ export function MobileIDELayout({
         <div className="absolute top-[40%] left-[10%] w-48 h-48 rounded-full bg-sky-500/10 blur-[80px]" />
       </div>
 
-      {/* Main Glass Mobile Developer App Container */}
+      {/* Main Glass Mobile Developer App Container (Floating Margin) */}
       <div className="relative w-full h-[96dvh] max-h-[860px] rounded-[20px] apple-modal-glass border border-white/20 shadow-2xl backdrop-blur-2xl flex flex-col overflow-hidden z-10">
         
-        {/* Top Header Bar */}
+        {/* Top Header Bar: ANURAJ.DEV + ☰ */}
         <MobileTopBar
           activeFileName={getFileName(activeFileId)}
           onOpenFiles={() => setIsFilesDrawerOpen(true)}
           onOpenSearch={() => setIsSearchOpen(true)}
-          onOpenMore={() => setIsMoreOpen(true)}
           onOpenResume={() => setIsResumePreviewOpen(true)}
           isSoundEnabled={isSoundEnabled}
-          onToggleSound={onToggleSound}
         />
 
         {/* Center Dynamic Content Area */}
@@ -129,6 +130,12 @@ export function MobileIDELayout({
 
           {activeTab === "projects" && (
             <MobileProjectsView
+              onOpenFileCode={handleSelectFile}
+            />
+          )}
+
+          {activeTab === "skills" && (
+            <MobileSkillsView
               onOpenFileCode={handleSelectFile}
             />
           )}
@@ -160,17 +167,11 @@ export function MobileIDELayout({
           )}
         </main>
 
-        {/* Native-App Glass Bottom Navigation */}
+        {/* Native-App Glass Bottom Navigation: Home, Projects, Skills, Git, More */}
         <MobileBottomNav
           activeTab={activeTab}
-          onSelectTab={(t) => {
-            if (t === "more") {
-              setIsMoreOpen(true);
-            } else {
-              setActiveTab(t);
-            }
-          }}
-          onOpenFiles={() => setIsFilesDrawerOpen(true)}
+          onSelectTab={(t) => setActiveTab(t)}
+          onOpenMore={() => setIsMoreOpen(true)}
         />
 
       </div>
@@ -227,7 +228,9 @@ export function MobileIDELayout({
         onOpenQR={() => setIsQROpen(true)}
         onOpenContact={() => setIsContactOpen(true)}
         onOpenTerminal={() => setIsTerminalOpen(true)}
-        onOpenSkills={() => handleSelectFile("java-core")}
+        onOpenSkills={() => {
+          setActiveTab("skills");
+        }}
         onOpenEducation={() => handleSelectFile("education-file")}
         currentTheme={currentTheme}
         onCycleTheme={onCycleTheme}

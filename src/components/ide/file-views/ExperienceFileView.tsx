@@ -77,6 +77,25 @@ export function ExperienceFileView({ type }: ExperienceFileViewProps) {
               <p className="text-sm text-slate-300">
                 Active study in containerization, messaging brokers, caching tiers, and cloud topology.
               </p>
+
+              {/* Active Sprint Project Highlight */}
+              <div className="pt-2">
+                <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between gap-3">
+                  <div className="space-y-0.5 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono text-[9px] font-bold uppercase">
+                        Current Build 2026
+                      </span>
+                      <span className="font-mono text-xs font-bold text-white truncate">
+                        SayIt – Speech & Reading Fluency Assistant
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 font-sans">
+                      Web Speech API (STT & TTS), phonics scoring, and interactive reading tracks for children & adults.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Orbit Map + Roadmap Grid */}

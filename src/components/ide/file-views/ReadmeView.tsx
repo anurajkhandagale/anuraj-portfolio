@@ -100,6 +100,11 @@ export function ReadmeView({ onOpenFile, onRunBuild, onOpenContact, onOpenQR }: 
           <span className="text-teal-400">String</span> mission = <span className="text-emerald-400">&quot;Build software that makes a difference.&quot;</span>;
         </div>
 
+        {/* Line 15: Current Active Endeavor */}
+        <div className="h-5 leading-5 font-mono pl-4">
+          <span className="text-teal-400">String</span> currentBuild = <span className="text-amber-300">&quot;SayIt – Speech & Reading Fluency Assistant (Web Speech AI for All Ages)&quot;</span>;
+        </div>
+
         {/* Line 15: empty in class */}
         <div className="h-5 leading-5" />
 

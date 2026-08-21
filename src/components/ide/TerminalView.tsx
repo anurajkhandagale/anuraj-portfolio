@@ -176,15 +176,19 @@ export function TerminalView({ onOpenFile, onRunBuild, onOpenContact, onOpenQR }
           <div className="space-y-2 text-xs text-slate-300 font-mono">
             <p className="text-emerald-400 font-bold">--- Featured Projects ---</p>
             <div>
-              <p className="text-[#d4a574] font-bold">1. AI Email Response Generator (Java, Spring Boot, LLM APIs)</p>
+              <p className="text-amber-300 font-bold">1. SayIt – Speech & Reading Fluency Assistant [🟡 2026 Sprint]</p>
+              <p className="text-slate-400">Next.js 16, Web Speech API (STT & TTS), phonics scoring for adults & kids.</p>
+            </div>
+            <div>
+              <p className="text-[#d4a574] font-bold">2. AI Email Response Generator (Java, Spring Boot, LLM APIs)</p>
               <p className="text-slate-400">Reduced manual response time by 60%, improved latency by 30%.</p>
             </div>
             <div>
-              <p className="text-[#d4a574] font-bold">2. Pit Stop Live – Garage Finder (Next.js, TS, PostgreSQL, Drizzle)</p>
+              <p className="text-[#d4a574] font-bold">3. Pit Stop Live – Garage Finder (Next.js, TS, PostgreSQL, Drizzle)</p>
               <p className="text-slate-400">Spatial emergency discovery under 2s with SOS tracking and 99.9% uptime.</p>
             </div>
             <div>
-              <p className="text-[#d4a574] font-bold">3. Student Management System (Java, Servlets, JSP, JDBC, MySQL)</p>
+              <p className="text-[#d4a574] font-bold">4. Student Management System (Java, Servlets, JSP, JDBC, MySQL)</p>
               <p className="text-slate-400">MVC transaction safety managing 500+ records with 0 connection leaks.</p>
             </div>
           </div>
