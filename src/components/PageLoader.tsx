@@ -13,23 +13,34 @@ export function PageLoader({ onComplete }: PageLoaderProps) {
   const [progress, setProgress] = useState(0);
   const [stepText, setStepText] = useState("Initializing OpenJDK 21 LTS Runtime...");
   const [shouldRender, setShouldRender] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Smooth ~2.2s progression so visitors can enjoy the splash animation
+    const isSmall = window.innerWidth < 768;
+    setIsMobile(isSmall);
+
+    // Snappy ~1.3s on mobile, smooth ~2.2s on desktop
+    const intervalTime = isSmall ? 16 : 28;
+
     const interval = setInterval(() => {
       setProgress((prev) => {
-        // Smooth progression
-        const increment = prev < 80 ? (Math.random() > 0.4 ? 2 : 1) : 3;
+        const increment = isSmall ? 3 : prev < 80 ? (Math.random() > 0.4 ? 2 : 1) : 3;
         const next = Math.min(prev + increment, 100);
 
-        if (next < 28) {
-          setStepText("Loading OpenJDK 21 LTS Runtime & Classpath...");
-        } else if (next < 60) {
-          setStepText("Indexing symbols: Projects, Skills, SPPU 8.12 CGPA...");
-        } else if (next < 88) {
-          setStepText("Starting Spring Boot 3.3 Context & HikariCP Pool...");
+        if (isSmall) {
+          if (next < 35) setStepText("✓ Workspace Initialized");
+          else if (next < 70) setStepText("✓ Projects & Java Environment Ready");
+          else setStepText("READY • Launching Anuraj.dev");
         } else {
-          setStepText("Workspace ready. Launching Glass IDE...");
+          if (next < 28) {
+            setStepText("Loading OpenJDK 21 LTS Runtime & Classpath...");
+          } else if (next < 60) {
+            setStepText("Indexing symbols: Projects, Skills, SPPU 8.12 CGPA...");
+          } else if (next < 88) {
+            setStepText("Starting Spring Boot 3.3 Context & HikariCP Pool...");
+          } else {
+            setStepText("Workspace ready. Launching Glass IDE...");
+          }
         }
 
         if (next >= 100) {
@@ -38,13 +49,13 @@ export function PageLoader({ onComplete }: PageLoaderProps) {
             soundManager.playChime();
             setShouldRender(false);
             onComplete();
-          }, 400);
+          }, isSmall ? 250 : 400);
           return 100;
         }
 
         return next;
       });
-    }, 28);
+    }, intervalTime);
 
     return () => clearInterval(interval);
   }, [onComplete]);
@@ -57,66 +68,66 @@ export function PageLoader({ onComplete }: PageLoaderProps) {
           exit={{ 
             opacity: 0,
             scale: 1.04,
-            transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } 
+            transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } 
           }}
-          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#030306] select-none"
+          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#030306] select-none p-4"
         >
           {/* Subtle Ambient Background Nebula behind splash card */}
-          <div className="absolute w-[520px] h-[520px] rounded-full bg-gradient-to-tr from-rose-600/30 via-purple-600/20 to-sky-500/20 blur-[110px] pointer-events-none" />
+          <div className="absolute w-[340px] sm:w-[520px] h-[340px] sm:h-[520px] rounded-full bg-gradient-to-tr from-rose-600/30 via-purple-600/20 to-sky-500/20 blur-[90px] sm:blur-[110px] pointer-events-none" />
 
           {/* Centered IntelliJ Smoked Glass Splash Panel */}
           <motion.div
             initial={{ scale: 0.94, opacity: 0, y: 15 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-[90vw] max-w-[420px] p-7 rounded-[26px] apple-modal-glass border border-white/20 shadow-2xl space-y-6 overflow-hidden"
+            transition={{ duration: 0.4 }}
+            className="w-full max-w-sm sm:max-w-md p-6 sm:p-7 rounded-[24px] apple-modal-glass border border-white/20 shadow-2xl backdrop-blur-3xl relative overflow-hidden z-10 space-y-5"
           >
-            {/* Header: Project Brand & Icon */}
-            <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#d4a574]/30 via-white/10 to-[#d4a574]/10 border border-[#d4a574]/40 flex items-center justify-center text-[#d4a574] shadow-lg">
-                <Code2 size={22} />
-              </div>
-              
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <h2 className="font-mono text-base font-extrabold text-white tracking-tight">
-                    ANURAJ.DEV
-                  </h2>
-                  <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
-                    2026.1
-                  </span>
+            {/* Top Branding */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#d4a574] to-[#996515] flex items-center justify-center text-black font-mono font-bold text-lg shadow-lg">
+                  <Code2 size={22} className="text-black" />
                 </div>
-                <p className="text-xs text-slate-400 font-mono">
-                  Java 21 LTS • Spring Boot • SPPU 8.12
-                </p>
+                <div>
+                  <h1 className="font-mono text-sm sm:text-base font-bold text-white tracking-tight">
+                    ANURAJ.DEV <span className="text-[#d4a574]">IDE</span>
+                  </h1>
+                  <p className="text-[11px] font-mono text-slate-400">
+                    Java Backend Engineer Edition 2026.1
+                  </p>
+                </div>
               </div>
+
+              <span className="px-2.5 py-1 rounded-full bg-white/[0.08] border border-white/15 text-[10px] font-mono text-slate-300 font-semibold">
+                v21.0-LTS
+              </span>
             </div>
 
-            {/* Progress & Step Info */}
-            <div className="space-y-2.5 pt-1">
+            {/* Middle Real-time Telemetry & Percentage */}
+            <div className="space-y-2 pt-1">
               <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-slate-300 truncate max-w-[280px]">
+                <span className="text-slate-300 font-medium truncate pr-2">
                   {stepText}
                 </span>
-                <span className="text-[#d4a574] font-bold shrink-0 ml-2">
+                <span className="text-[#d4a574] font-bold shrink-0">
                   {progress}%
                 </span>
               </div>
 
-              {/* Progress Bar Track */}
-              <div className="w-full h-2 rounded-full bg-black/40 border border-white/10 overflow-hidden relative shadow-inner">
+              {/* Glowing Count-Up Progress Bar */}
+              <div className="w-full h-2 rounded-full bg-white/[0.08] overflow-hidden p-[1px] border border-white/10">
                 <motion.div
-                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#d4a574] via-emerald-400 to-sky-400 rounded-full shadow-[0_0_12px_#34d399]"
+                  className="h-full rounded-full bg-gradient-to-r from-rose-500 via-[#d4a574] to-emerald-400 shadow-[0_0_12px_rgba(212,165,116,0.8)]"
                   style={{ width: `${progress}%` }}
-                  transition={{ ease: "easeInOut" }}
+                  transition={{ ease: "easeOut" }}
                 />
               </div>
             </div>
 
-            {/* Footer Status */}
-            <div className="flex items-center justify-between pt-1 border-t border-white/5 text-[10px] font-mono text-slate-500">
+            {/* Bottom Metadata & SPPU Badge */}
+            <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-slate-400">
               <span>Anuraj Laxman Khandagale</span>
-              <span>IntelliJ Glass Engine</span>
+              <span className="text-emerald-400 font-semibold">SPPU 8.12 CGPA</span>
             </div>
           </motion.div>
         </motion.div>

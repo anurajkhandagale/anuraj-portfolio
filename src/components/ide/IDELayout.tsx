@@ -20,6 +20,7 @@ import { MacOSMenuBar } from "@/components/desktop/MacOSMenuBar";
 import { DesktopIcons } from "@/components/desktop/DesktopIcons";
 import { AppleHelloHero } from "@/components/desktop/AppleHelloHero";
 import { NotificationCenter } from "@/components/ui/NotificationCenter";
+import { MobileIDELayout } from "@/components/mobile/MobileIDELayout";
 import { PORTFOLIO_DATA, FILE_TREE, FileItem } from "@/data/portfolioData";
 import { soundManager } from "@/utils/audio";
 import { showToast } from "@/utils/notifications";
@@ -47,7 +48,7 @@ export function IDELayout() {
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   
-  // Starts in macOS desktop screen as requested
+  // Starts in macOS desktop screen as requested on desktop
   const [isMinimized, setIsMinimized] = useState<boolean>(true);
   const [currentTheme, setCurrentTheme] = useState<ThemePreset>("theme-obsidian");
   
@@ -162,7 +163,6 @@ export function IDELayout() {
     if (isSoundEnabled) soundManager.playClick();
     const newTabs = tabs.filter((t) => t.id !== tabId);
     if (newTabs.length === 0) {
-      // Reopen readme if all closed
       setTabs([{ id: "readme", name: "README.md", extension: "md" }]);
       setActiveTabId("readme");
       return;
@@ -208,283 +208,270 @@ export function IDELayout() {
   const activeFileInfo = getFileInfo(activeTabId);
 
   return (
-    <div 
-      onMouseMove={handleMouseMove}
-      className={`relative min-h-screen w-full flex items-center justify-center p-2 sm:p-5 md:p-8 select-none overflow-hidden bg-[#030306] ${currentTheme}`}
-    >
-      
+    <>
       {/* =========================================================
-          MACOS FLOATING GLASS NOTIFICATION CENTER TOASTS
+          1. DEDICATED MOBILE DEVELOPER APP (SCREEN < 768px)
           ========================================================= */}
-      <NotificationCenter />
-
-      {/* =========================================================
-          TOP MACOS MENU BAR
-          ========================================================= */}
-      <MacOSMenuBar
-        onOpenIDE={handleOpenIDE}
-        onOpenSearch={() => setIsSearchOpen(true)}
-        onOpenContact={() => setIsContactOpen(true)}
-        onOpenQR={() => setIsQROpen(true)}
-        onOpenResumePreview={() => setIsResumePreviewOpen(true)}
-        onCycleTheme={handleCycleTheme}
-        isSoundEnabled={isSoundEnabled}
-        onToggleSound={handleToggleSound}
-      />
-
-      {/* =========================================================
-          BACKGROUND ARTWORK: 3D SPHERES, RINGS & NEBULA WITH PARALLAX
-          ========================================================= */}
-      <div className="ambient-scene-container">
-        {/* Purple / Cyan Nebula on left (Shifts with mouse) */}
-        <motion.div
-          style={{ x: nebulaX, y: nebulaY }}
-          className="nebula-purple-left"
-        />
-
-        {/* Ambient Red Glow on right */}
-        <div className="ambient-red-glow" />
-
-        {/* Luminous Orbital Red Ring (3D Parallax tilt) */}
-        <motion.div
-          style={{ x: ringX, y: ringY }}
-          animate={{ rotate: [-15, -10, -18, -15] }}
-          transition={{ repeat: Infinity, duration: 28, ease: "easeInOut" }}
-          className="orbital-ring-red"
-        />
-
-        {/* Large 3D Glass Luminous Red Sphere (Foreground Parallax Depth) */}
-        <motion.div
-          style={{ x: sphereLargeX, y: sphereLargeY }}
-          animate={{
-            scale: [1, 1.04, 0.97, 1],
-          }}
-          transition={{ repeat: Infinity, duration: 18, ease: "easeInOut" }}
-          className="glass-sphere-red-large"
-        />
-
-        {/* Smaller 3D Red Luminous Sphere (Bottom Right) */}
-        <motion.div
-          style={{ x: sphereSmallX, y: sphereSmallY }}
-          animate={{
-            scale: [1, 1.08, 0.92, 1],
-          }}
-          transition={{ repeat: Infinity, duration: 14, ease: "easeInOut" }}
-          className="glass-sphere-red-small"
+      <div className="block md:hidden w-full min-h-screen">
+        <MobileIDELayout
+          currentTheme={currentTheme}
+          onCycleTheme={handleCycleTheme}
+          isSoundEnabled={isSoundEnabled}
+          onToggleSound={handleToggleSound}
         />
       </div>
 
       {/* =========================================================
-          MACOS DESKTOP APPLICATION ICONS
+          2. COMPLETE DESKTOP MACOS FLOATING IDE (SCREEN >= 768px)
           ========================================================= */}
-      <DesktopIcons
-        onOpenIDE={handleOpenIDE}
-        onOpenResumePreview={() => setIsResumePreviewOpen(true)}
-        onOpenQR={() => setIsQROpen(true)}
-        onOpenContact={() => setIsContactOpen(true)}
-      />
+      <div 
+        onMouseMove={handleMouseMove}
+        className={`hidden md:flex relative min-h-screen w-full items-center justify-center p-2 sm:p-5 md:p-8 select-none overflow-hidden bg-[#030306] ${currentTheme}`}
+      >
+        
+        {/* Top-Center Dynamic Island Notification Toasts */}
+        <NotificationCenter />
 
-      {/* =========================================================
-          CLASSIC APPLE HELLO / NAMASTE HERO (When in Desktop Mode)
-          ========================================================= */}
-      <AnimatePresence>
-        {isMinimized && (
-          <AppleHelloHero onOpenIDE={handleOpenIDE} />
-        )}
-      </AnimatePresence>
+        {/* Top macOS Menu Bar */}
+        <MacOSMenuBar
+          onOpenIDE={handleOpenIDE}
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenContact={() => setIsContactOpen(true)}
+          onOpenQR={() => setIsQROpen(true)}
+          onOpenResumePreview={() => setIsResumePreviewOpen(true)}
+          onCycleTheme={handleCycleTheme}
+          isSoundEnabled={isSoundEnabled}
+          onToggleSound={handleToggleSound}
+        />
 
-      {/* =========================================================
-          MAIN FLOATING TRANSLUCENT GLASS IDE WINDOW
-          ========================================================= */}
-      <AnimatePresence mode="wait">
-        {!isMinimized && (
+        {/* Ambient Artwork with Mouse Parallax */}
+        <div className="ambient-scene-container">
           <motion.div
-            key="ide-window"
-            style={{ rotateX: ideTiltX, rotateY: ideTiltY }}
-            initial={{ opacity: 0, scale: 0.85, y: 120 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.15, y: 280, transition: { duration: 0.32, ease: [0.32, 0, 0.67, 0] } }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className={`w-full flex flex-col floating-glass-ide transition-all duration-300 relative z-30 overflow-hidden ${
-              isFullscreen
-                ? "fixed inset-0 h-screen rounded-none z-50"
-                : "h-[94vh] sm:h-[88vh] md:h-[82vh] max-h-[820px] min-h-[580px] w-[98vw] sm:w-[94vw] md:w-[90vw] lg:w-[86vw] xl:w-[82vw] max-w-[1300px] rounded-[22px] sm:rounded-[26px]"
-            }`}
-          >
-            {/* Top Navigation Bar */}
-            <TopBar
-              activeFileName={activeFileInfo.name}
-              onOpenSearch={() => setIsSearchOpen(true)}
-              onRunBuild={handleRunBuild}
-              onOpenContact={() => setIsContactOpen(true)}
-              onOpenQR={() => setIsQROpen(true)}
-              onOpenSettings={() => setIsSettingsOpen(true)}
-              onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
-              isSidebarOpen={isSidebarOpen}
-              onToggleFullscreen={() => setIsFullscreen((prev) => !prev)}
-              isFullscreen={isFullscreen}
-              onMinimize={() => setIsMinimized(true)}
-              onClose={() => setIsMinimized(true)}
-            />
+            style={{ x: nebulaX, y: nebulaY }}
+            className="nebula-purple-left"
+          />
 
-            {/* Center Workspace (Activity Bar + Explorer + Editor + Right Widget) */}
-            <div className="flex-1 flex overflow-hidden relative min-h-0">
-              
-              {/* Far-Left Activity Bar (Icon Strip) */}
-              <ActivityBar
-                activeView={activeView}
-                onSelectView={(v) => {
-                  if (isSoundEnabled) soundManager.playClick();
-                  setActiveView(v);
-                  if (v === "explorer") setIsSidebarOpen(true);
-                  if (v === "run") handleRunBuild();
-                }}
+          <div className="ambient-red-glow" />
+
+          <motion.div
+            style={{ x: ringX, y: ringY }}
+            animate={{ rotate: [-15, -10, -18, -15] }}
+            transition={{ repeat: Infinity, duration: 28, ease: "easeInOut" }}
+            className="orbital-ring-red"
+          />
+
+          <motion.div
+            style={{ x: sphereLargeX, y: sphereLargeY }}
+            animate={{
+              scale: [1, 1.04, 0.97, 1],
+            }}
+            transition={{ repeat: Infinity, duration: 18, ease: "easeInOut" }}
+            className="glass-sphere-red-large"
+          />
+
+          <motion.div
+            style={{ x: sphereSmallX, y: sphereSmallY }}
+            animate={{
+              scale: [1, 1.08, 0.92, 1],
+            }}
+            transition={{ repeat: Infinity, duration: 14, ease: "easeInOut" }}
+            className="glass-sphere-red-small"
+          />
+        </div>
+
+        {/* Desktop Application Icons */}
+        <DesktopIcons
+          onOpenIDE={handleOpenIDE}
+          onOpenResumePreview={() => setIsResumePreviewOpen(true)}
+          onOpenQR={() => setIsQROpen(true)}
+          onOpenContact={() => setIsContactOpen(true)}
+        />
+
+        {/* Classic Apple Hello / Namaste Hero */}
+        <AnimatePresence>
+          {isMinimized && (
+            <AppleHelloHero onOpenIDE={handleOpenIDE} />
+          )}
+        </AnimatePresence>
+
+        {/* Main Floating Glass IDE Window */}
+        <AnimatePresence mode="wait">
+          {!isMinimized && (
+            <motion.div
+              key="ide-window"
+              style={{ rotateX: ideTiltX, rotateY: ideTiltY }}
+              initial={{ opacity: 0, scale: 0.85, y: 120 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.15, y: 280, transition: { duration: 0.32, ease: [0.32, 0, 0.67, 0] } }}
+              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className={`w-full flex flex-col floating-glass-ide transition-all duration-300 relative z-30 overflow-hidden ${
+                isFullscreen
+                  ? "fixed inset-0 h-screen rounded-none z-50"
+                  : "h-[94vh] sm:h-[88vh] md:h-[82vh] max-h-[820px] min-h-[580px] w-[98vw] sm:w-[94vw] md:w-[90vw] lg:w-[86vw] xl:w-[82vw] max-w-[1300px] rounded-[22px] sm:rounded-[26px]"
+              }`}
+            >
+              <TopBar
+                activeFileName={activeFileInfo.name}
                 onOpenSearch={() => setIsSearchOpen(true)}
-                onOpenGit={() => {
-                  setIsBottomDockOpen(true);
-                  setBottomPanel("git");
-                }}
+                onRunBuild={handleRunBuild}
                 onOpenContact={() => setIsContactOpen(true)}
+                onOpenQR={() => setIsQROpen(true)}
                 onOpenSettings={() => setIsSettingsOpen(true)}
+                onToggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
+                isSidebarOpen={isSidebarOpen}
+                onToggleFullscreen={() => setIsFullscreen((prev) => !prev)}
+                isFullscreen={isFullscreen}
+                onMinimize={() => setIsMinimized(true)}
+                onClose={() => setIsMinimized(true)}
               />
 
-              {/* Project Explorer Tree Sidebar */}
-              <ProjectExplorer
-                activeFileId={activeTabId}
-                onSelectFile={handleOpenFile}
-                isOpen={isSidebarOpen}
-                onCloseMobile={() => {
-                  if (window.innerWidth < 1024) setIsSidebarOpen(false);
-                }}
-              />
-
-              {/* Main Code Editor & Bottom Dock Column */}
-              <main className="flex-1 flex flex-col h-full overflow-hidden min-w-0">
-                {/* Multi-Tab Bar */}
-                <EditorTabs
-                  tabs={tabs}
-                  activeTabId={activeTabId}
-                  onSelectTab={(id) => {
+              <div className="flex-1 flex overflow-hidden relative min-h-0">
+                <ActivityBar
+                  activeView={activeView}
+                  onSelectView={(v) => {
                     if (isSoundEnabled) soundManager.playClick();
-                    setActiveTabId(id);
+                    setActiveView(v);
+                    if (v === "explorer") setIsSidebarOpen(true);
+                    if (v === "run") handleRunBuild();
                   }}
-                  onCloseTab={handleCloseTab}
-                  onNewTabSearch={() => setIsSearchOpen(true)}
+                  onOpenSearch={() => setIsSearchOpen(true)}
+                  onOpenGit={() => {
+                    setIsBottomDockOpen(true);
+                    setBottomPanel("git");
+                  }}
+                  onOpenContact={() => setIsContactOpen(true)}
+                  onOpenSettings={() => setIsSettingsOpen(true)}
                 />
 
-                {/* Code Editor Body */}
-                <div className="flex-1 flex flex-col overflow-hidden min-h-0 apple-glass-editor">
-                  <CodeEditor
-                    activeFileId={activeTabId}
+                <ProjectExplorer
+                  activeFileId={activeTabId}
+                  onSelectFile={handleOpenFile}
+                  isOpen={isSidebarOpen}
+                  onCloseMobile={() => {
+                    if (window.innerWidth < 1024) setIsSidebarOpen(false);
+                  }}
+                />
+
+                <main className="flex-1 flex flex-col h-full overflow-hidden min-w-0">
+                  <EditorTabs
+                    tabs={tabs}
+                    activeTabId={activeTabId}
+                    onSelectTab={(id) => {
+                      if (isSoundEnabled) soundManager.playClick();
+                      setActiveTabId(id);
+                    }}
+                    onCloseTab={handleCloseTab}
+                    onNewTabSearch={() => setIsSearchOpen(true)}
+                  />
+
+                  <div className="flex-1 flex flex-col overflow-hidden min-h-0 apple-glass-editor">
+                    <CodeEditor
+                      activeFileId={activeTabId}
+                      onOpenFile={handleOpenFile}
+                      onRunBuild={handleRunBuild}
+                      onOpenContact={() => setIsContactOpen(true)}
+                      onOpenQR={() => setIsQROpen(true)}
+                    />
+                  </div>
+
+                  <BottomDock
+                    isOpen={isBottomDockOpen}
+                    activePanel={bottomPanel}
+                    onSelectPanel={(panel) => {
+                      if (isSoundEnabled) soundManager.playClick();
+                      setBottomPanel(panel);
+                    }}
+                    onToggleOpen={() => setIsBottomDockOpen((prev) => !prev)}
                     onOpenFile={handleOpenFile}
                     onRunBuild={handleRunBuild}
                     onOpenContact={() => setIsContactOpen(true)}
                     onOpenQR={() => setIsQROpen(true)}
                   />
-                </div>
+                </main>
 
-                {/* Bottom Dock (Terminal / Git / Activity dock) */}
-                <BottomDock
-                  isOpen={isBottomDockOpen}
-                  activePanel={bottomPanel}
-                  onSelectPanel={(panel) => {
-                    if (isSoundEnabled) soundManager.playClick();
-                    setBottomPanel(panel);
-                  }}
-                  onToggleOpen={() => setIsBottomDockOpen((prev) => !prev)}
-                  onOpenFile={handleOpenFile}
-                  onRunBuild={handleRunBuild}
+                <RightSidebar 
+                  onOpenQR={() => setIsQROpen(true)} 
                   onOpenContact={() => setIsContactOpen(true)}
-                  onOpenQR={() => setIsQROpen(true)}
+                  onOpenResumePreview={() => setIsResumePreviewOpen(true)}
                 />
-              </main>
+              </div>
 
-              {/* Right Inspector Panel: ABOUT.ME & QUICK STATS */}
-              <RightSidebar 
-                onOpenQR={() => setIsQROpen(true)} 
-                onOpenContact={() => setIsContactOpen(true)}
-                onOpenResumePreview={() => setIsResumePreviewOpen(true)}
+              <StatusBar
+                onOpenGit={() => {
+                  setIsBottomDockOpen(true);
+                  setBottomPanel("git");
+                }}
+                onOpenTerminal={() => {
+                  setIsBottomDockOpen(true);
+                  setBottomPanel("terminal");
+                }}
               />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            </div>
-
-            {/* Status Bar */}
-            <StatusBar
-              onOpenGit={() => {
-                setIsBottomDockOpen(true);
-                setBottomPanel("git");
-              }}
-              onOpenTerminal={() => {
-                setIsBottomDockOpen(true);
-                setBottomPanel("terminal");
-              }}
+        {/* Minimized Dock */}
+        <AnimatePresence>
+          {isMinimized && (
+            <MinimizedTaskbar
+              onRestore={handleOpenIDE}
+              onOpenQR={() => setIsQROpen(true)}
+              onOpenResumePreview={() => setIsResumePreviewOpen(true)}
+              onOpenContact={() => setIsContactOpen(true)}
+              onCycleTheme={handleCycleTheme}
+              isSoundEnabled={isSoundEnabled}
+              onToggleSound={handleToggleSound}
             />
+          )}
+        </AnimatePresence>
 
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Minimized Glass Taskbar Dock (Appears when in Desktop Mode) */}
-      <AnimatePresence>
-        {isMinimized && (
-          <MinimizedTaskbar
-            onRestore={handleOpenIDE}
-            onOpenQR={() => setIsQROpen(true)}
-            onOpenResumePreview={() => setIsResumePreviewOpen(true)}
-            onOpenContact={() => setIsContactOpen(true)}
+        {/* Floating Side Controls */}
+        {!isMinimized && (
+          <FloatingSideControls
+            currentTheme={currentTheme}
             onCycleTheme={handleCycleTheme}
             isSoundEnabled={isSoundEnabled}
             onToggleSound={handleToggleSound}
+            onOpenSettingsModal={() => setIsSettingsOpen(true)}
           />
         )}
-      </AnimatePresence>
 
-      {/* Circular Floating Glass Controls on Right Side */}
-      {!isMinimized && (
-        <FloatingSideControls
+        {/* Modals */}
+        <CommandPalette
+          isOpen={isSearchOpen}
+          onClose={() => setIsSearchOpen(false)}
+          onOpenFile={handleOpenFile}
+          onRunBuild={handleRunBuild}
+          onOpenContact={() => setIsContactOpen(true)}
+          onOpenQR={() => setIsQROpen(true)}
+        />
+
+        <ContactModal
+          isOpen={isContactOpen}
+          onClose={() => setIsContactOpen(false)}
+        />
+
+        <ResumeQRModal
+          isOpen={isQROpen}
+          onClose={() => setIsQROpen(false)}
+        />
+
+        <ResumePreviewModal
+          isOpen={isResumePreviewOpen}
+          onClose={() => setIsResumePreviewOpen(false)}
+          onOpenQR={() => setIsQROpen(true)}
+        />
+
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
           currentTheme={currentTheme}
-          onCycleTheme={handleCycleTheme}
+          onSelectTheme={(t) => setCurrentTheme(t)}
           isSoundEnabled={isSoundEnabled}
           onToggleSound={handleToggleSound}
-          onOpenSettingsModal={() => setIsSettingsOpen(true)}
         />
-      )}
 
-      {/* Floating Glass Overlays */}
-      <CommandPalette
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-        onOpenFile={handleOpenFile}
-        onRunBuild={handleRunBuild}
-        onOpenContact={() => setIsContactOpen(true)}
-        onOpenQR={() => setIsQROpen(true)}
-      />
-
-      <ContactModal
-        isOpen={isContactOpen}
-        onClose={() => setIsContactOpen(false)}
-      />
-
-      <ResumeQRModal
-        isOpen={isQROpen}
-        onClose={() => setIsQROpen(false)}
-      />
-
-      <ResumePreviewModal
-        isOpen={isResumePreviewOpen}
-        onClose={() => setIsResumePreviewOpen(false)}
-        onOpenQR={() => setIsQROpen(true)}
-      />
-
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-        currentTheme={currentTheme}
-        onSelectTheme={(t) => setCurrentTheme(t)}
-        isSoundEnabled={isSoundEnabled}
-        onToggleSound={handleToggleSound}
-      />
-
-    </div>
+      </div>
+    </>
   );
 }
