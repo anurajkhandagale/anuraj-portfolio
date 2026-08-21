@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { Code2, Sparkles, CheckCircle2 } from "lucide-react";
+import { soundManager } from "@/utils/audio";
 
 interface PageLoaderProps {
   onComplete: () => void;
@@ -10,36 +11,40 @@ interface PageLoaderProps {
 
 export function PageLoader({ onComplete }: PageLoaderProps) {
   const [progress, setProgress] = useState(0);
+  const [stepText, setStepText] = useState("Initializing OpenJDK 21 LTS Runtime...");
   const [shouldRender, setShouldRender] = useState(true);
 
   useEffect(() => {
-    // Check if loader already played in this browser session
-    const hasLoaded = sessionStorage.getItem("portfolio-loaded");
-    if (hasLoaded === "true") {
-      setProgress(100);
-      setShouldRender(false);
-      onComplete();
-      return;
-    }
-
-    // Set count-up timer with varying speed increments for organic progression
+    // Smooth ~2.2s progression so visitors can enjoy the splash animation
     const interval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) {
+        // Smooth progression
+        const increment = prev < 80 ? (Math.random() > 0.4 ? 2 : 1) : 3;
+        const next = Math.min(prev + increment, 100);
+
+        if (next < 28) {
+          setStepText("Loading OpenJDK 21 LTS Runtime & Classpath...");
+        } else if (next < 60) {
+          setStepText("Indexing symbols: Projects, Skills, SPPU 8.12 CGPA...");
+        } else if (next < 88) {
+          setStepText("Starting Spring Boot 3.3 Context & HikariCP Pool...");
+        } else {
+          setStepText("Workspace ready. Launching Glass IDE...");
+        }
+
+        if (next >= 100) {
           clearInterval(interval);
           setTimeout(() => {
+            soundManager.playChime();
             setShouldRender(false);
-            sessionStorage.setItem("portfolio-loaded", "true");
             onComplete();
-          }, 300);
+          }, 400);
           return 100;
         }
-        
-        // Random speed intervals
-        const increment = Math.floor(Math.random() * 8) + 2; 
-        return Math.min(prev + increment, 100);
+
+        return next;
       });
-    }, 60);
+    }, 28);
 
     return () => clearInterval(interval);
   }, [onComplete]);
@@ -50,56 +55,70 @@ export function PageLoader({ onComplete }: PageLoaderProps) {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ 
-            y: "-100%", 
             opacity: 0,
-            transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } 
+            scale: 1.04,
+            transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } 
           }}
-          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#050505]"
+          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#030306] select-none"
         >
-          {/* Centered Brand Group */}
-          <div className="relative select-none">
-            
-            {/* Background Colorful Glow Circles (matching mockup) */}
-            {/* Mint circle (top left) */}
-            <div className="absolute w-[80px] h-[80px] rounded-full bg-[#3ddc97] opacity-60 blur-md -top-6 -left-8 z-0" />
-            {/* Purple circle (top right) */}
-            <div className="absolute w-[70px] h-[70px] rounded-full bg-[#c084fc] opacity-60 blur-md -top-4 -right-6 z-0" />
-            {/* Cyan/Blue circle (bottom center) */}
-            <div className="absolute w-[75px] h-[75px] rounded-full bg-[#38bdf8] opacity-60 blur-md -bottom-8 left-[60%] -translate-x-1/2 z-0" />
+          {/* Subtle Ambient Background Nebula behind splash card */}
+          <div className="absolute w-[520px] h-[520px] rounded-full bg-gradient-to-tr from-rose-600/30 via-purple-600/20 to-sky-500/20 blur-[110px] pointer-events-none" />
 
-            {/* Frosted Glass Progress Card */}
-            <div className="relative w-[340px] px-7 py-6 rounded-[28px] loader-glass-card shadow-2xl z-10 overflow-hidden flex flex-col gap-5">
-              
-              {/* Progress Text & Close Icon */}
-              <div className="flex items-center justify-between">
-                <span className="font-sans text-sm font-extrabold tracking-wide text-white">
-                  Progress {progress}%
-                </span>
-                
-                {/* Visual mock close button */}
-                <div className="w-7 h-7 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/50">
-                  <X size={12} strokeWidth={2.5} />
-                </div>
+          {/* Centered IntelliJ Smoked Glass Splash Panel */}
+          <motion.div
+            initial={{ scale: 0.94, opacity: 0, y: 15 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-[90vw] max-w-[420px] p-7 rounded-[26px] apple-modal-glass border border-white/20 shadow-2xl space-y-6 overflow-hidden"
+          >
+            {/* Header: Project Brand & Icon */}
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#d4a574]/30 via-white/10 to-[#d4a574]/10 border border-[#d4a574]/40 flex items-center justify-center text-[#d4a574] shadow-lg">
+                <Code2 size={22} />
               </div>
               
-              {/* Progress track */}
-              <div className="w-full h-2.5 bg-black/45 rounded-full overflow-hidden relative border border-white/5 shadow-inner">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <h2 className="font-mono text-base font-extrabold text-white tracking-tight">
+                    ANURAJ.DEV
+                  </h2>
+                  <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">
+                    2026.1
+                  </span>
+                </div>
+                <p className="text-xs text-slate-400 font-mono">
+                  Java 21 LTS • Spring Boot • SPPU 8.12
+                </p>
+              </div>
+            </div>
+
+            {/* Progress & Step Info */}
+            <div className="space-y-2.5 pt-1">
+              <div className="flex items-center justify-between text-xs font-mono">
+                <span className="text-slate-300 truncate max-w-[280px]">
+                  {stepText}
+                </span>
+                <span className="text-[#d4a574] font-bold shrink-0 ml-2">
+                  {progress}%
+                </span>
+              </div>
+
+              {/* Progress Bar Track */}
+              <div className="w-full h-2 rounded-full bg-black/40 border border-white/10 overflow-hidden relative shadow-inner">
                 <motion.div
-                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#3ddc97] to-[#10b981] rounded-full"
+                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#d4a574] via-emerald-400 to-sky-400 rounded-full shadow-[0_0_12px_#34d399]"
                   style={{ width: `${progress}%` }}
                   transition={{ ease: "easeInOut" }}
                 />
               </div>
             </div>
-            
-          </div>
 
-          {/* Footer Metadata */}
-          <div className="absolute bottom-10 left-1/2 -translate-x-1/2 select-none pointer-events-none">
-            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#555] font-bold">
-              System Boot // v1.2.0
-            </span>
-          </div>
+            {/* Footer Status */}
+            <div className="flex items-center justify-between pt-1 border-t border-white/5 text-[10px] font-mono text-slate-500">
+              <span>Anuraj Laxman Khandagale</span>
+              <span>IntelliJ Glass Engine</span>
+            </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
