@@ -2,13 +2,21 @@
 
 import React, { useState, useEffect } from "react";
 import { soundManager } from "@/utils/audio";
+import { showToast } from "@/utils/notifications";
 import { motion, AnimatePresence } from "framer-motion";
+import { Command, FileText, Headphones, Code2, Sparkles } from "lucide-react";
 
 interface AppleHelloHeroProps {
   onOpenIDE: () => void;
+  onOpenSearch?: () => void;
+  onOpenResumePreview?: () => void;
 }
 
-export function AppleHelloHero({ onOpenIDE }: AppleHelloHeroProps) {
+export function AppleHelloHero({ 
+  onOpenIDE,
+  onOpenSearch,
+  onOpenResumePreview,
+}: AppleHelloHeroProps) {
   const [index, setIndex] = useState(0);
 
   const items = [
@@ -27,7 +35,7 @@ export function AppleHelloHero({ onOpenIDE }: AppleHelloHeroProps) {
           hello
         </span>
       ),
-      hint: "Click on any app or dock to interact",
+      hint: "Click anywhere to enter the developer environment",
     },
     {
       id: "namaste",
@@ -44,7 +52,7 @@ export function AppleHelloHero({ onOpenIDE }: AppleHelloHeroProps) {
           नमस्ते
         </span>
       ),
-      hint: "खोलने के लिए किसी भी ऐप पर क्लिक करें",
+      hint: "डेवलपर स्टूडियो खोलने के लिए कहीं भी क्लिक करें",
     },
   ];
 
@@ -58,6 +66,19 @@ export function AppleHelloHero({ onOpenIDE }: AppleHelloHeroProps) {
   }, [items.length]);
 
   const current = items[index];
+
+  const handleLoFiClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    soundManager.playClick();
+    const state = soundManager.getSoundscapeState();
+    if (state.isPlaying) {
+      soundManager.stopSoundscape();
+      showToast("Lo-Fi Ambience", "Soundscape paused", "audio");
+    } else {
+      soundManager.startSoundscape("lofi");
+      showToast("Lo-Fi Ambience", "Playing Lo-Fi Coding Waves", "audio");
+    }
+  };
 
   return (
     <div
@@ -89,6 +110,66 @@ export function AppleHelloHero({ onOpenIDE }: AppleHelloHeroProps) {
             </p>
           </motion.div>
         </AnimatePresence>
+
+        {/* Feature Discovery Quick-Pills (How visitors know what is available) */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="mt-6 flex flex-wrap items-center justify-center gap-2 max-w-lg"
+        >
+          {/* ⌘K Spotlight Pill */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              soundManager.playClick();
+              if (onOpenSearch) onOpenSearch();
+            }}
+            className="px-3 py-1.5 rounded-full apple-glass-card border border-white/15 hover:border-[#d4a574]/60 bg-black/40 hover:bg-black/60 text-white text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer shadow-lg hover:shadow-xl backdrop-blur-xl group active:scale-95"
+          >
+            <Command size={12} className="text-[#d4a574]" />
+            <span>Type <strong className="text-[#d4a574]">⌘K</strong> for Actions</span>
+          </button>
+
+          {/* Resume PDF Pill */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              soundManager.playClick();
+              if (onOpenResumePreview) onOpenResumePreview();
+            }}
+            className="px-3 py-1.5 rounded-full apple-glass-card border border-white/15 hover:border-sky-400/60 bg-black/40 hover:bg-black/60 text-white text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer shadow-lg hover:shadow-xl backdrop-blur-xl active:scale-95"
+          >
+            <FileText size={12} className="text-sky-400" />
+            <span>Resume PDF</span>
+          </button>
+
+          {/* Lo-Fi Audio Pill */}
+          <button
+            type="button"
+            onClick={handleLoFiClick}
+            className="px-3 py-1.5 rounded-full apple-glass-card border border-white/15 hover:border-emerald-400/60 bg-black/40 hover:bg-black/60 text-white text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer shadow-lg hover:shadow-xl backdrop-blur-xl active:scale-95"
+          >
+            <Headphones size={12} className="text-emerald-400" />
+            <span>Lo-Fi Ambience</span>
+          </button>
+
+          {/* Enter IDE Pill */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              soundManager.playChime();
+              onOpenIDE();
+            }}
+            className="px-3 py-1.5 rounded-full apple-glass-card border border-white/15 hover:border-[#d4a574]/60 bg-[#d4a574]/15 hover:bg-[#d4a574]/25 text-[#d4a574] text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-lg hover:shadow-xl backdrop-blur-xl active:scale-95"
+          >
+            <Code2 size={12} />
+            <span>Launch Studio</span>
+          </button>
+        </motion.div>
       </div>
 
       {/* Bottom Subtle pulsing home indicator bar */}

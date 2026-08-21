@@ -12,6 +12,7 @@ import {
   HardDrive
 } from "lucide-react";
 import { soundManager } from "@/utils/audio";
+import { AmbientSoundscapePlayer } from "@/components/desktop/AmbientSoundscapePlayer";
 
 interface MacOSMenuBarProps {
   onOpenIDE: () => void;
@@ -110,6 +111,9 @@ export function MacOSMenuBar({
           <Palette size={12} />
         </button>
 
+        {/* Ambient Soundscape Lo-Fi Player */}
+        <AmbientSoundscapePlayer />
+
         {/* Audio Toggle */}
         <button
           type="button"
@@ -122,14 +126,18 @@ export function MacOSMenuBar({
           {isSoundEnabled ? <Volume2 size={12} /> : <VolumeX size={12} />}
         </button>
 
-        {/* Search */}
+        {/* Supercharged Spotlight Search Button with visible ⌘K badge */}
         <button
           type="button"
           onClick={onOpenSearch}
-          title="Search Everywhere (⌘K)"
-          className="hover:text-white transition-colors cursor-pointer"
+          title="Search Everywhere & Quick Actions (⌘K)"
+          className="h-5 px-2 rounded-full apple-glass-card border border-white/15 hover:border-[#d4a574]/50 bg-white/[0.04] hover:bg-white/10 text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer"
         >
-          <Search size={12} />
+          <Search size={11} className="text-[#d4a574]" />
+          <span className="hidden sm:inline font-mono text-[10px] text-slate-400">Search</span>
+          <kbd className="px-1 py-0.2 rounded bg-white/10 text-[9px] font-mono text-slate-300 font-bold">
+            ⌘K
+          </kbd>
         </button>
 
         {/* Memory telemetry */}

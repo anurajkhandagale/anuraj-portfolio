@@ -114,6 +114,29 @@ export function TerminalView({ onOpenFile, onRunBuild, onOpenContact, onOpenQR }
         );
         break;
 
+      case "bill":
+      case "summon bill":
+      case "sudo summon bill":
+      case "clippy":
+        soundManager.playChime();
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("summon-bill"));
+        }
+        response = (
+          <div className="space-y-1.5 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs font-mono text-amber-400 max-w-md shadow-lg">
+            <div className="flex items-center gap-2 font-bold text-white text-sm">
+              <span>👀 [SUMMONING BILL — ASSISTANT 97]</span>
+            </div>
+            <p className="text-slate-200">
+              &quot;It looks like you&apos;re exploring the terminal! Bill has entered the room.&quot;
+            </p>
+            <p className="text-[10px] text-slate-400">
+              Shortcut: <kbd className="px-1.5 py-0.2 rounded bg-white/10 text-white">Ctrl + Shift + B</kbd>
+            </p>
+          </div>
+        );
+        break;
+
       case "sudo hire anuraj":
       case "hire anuraj":
       case "sudo hire":

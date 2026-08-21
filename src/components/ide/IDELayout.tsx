@@ -19,6 +19,8 @@ import { MinimizedTaskbar } from "./MinimizedTaskbar";
 import { MacOSMenuBar } from "@/components/desktop/MacOSMenuBar";
 import { DesktopIcons } from "@/components/desktop/DesktopIcons";
 import { AppleHelloHero } from "@/components/desktop/AppleHelloHero";
+import { DesktopStickyNotes } from "@/components/desktop/DesktopStickyNotes";
+import { BillAssistant } from "@/components/desktop/BillAssistant";
 import { NotificationCenter } from "@/components/ui/NotificationCenter";
 import { MobileIDELayout } from "@/components/mobile/MobileIDELayout";
 import { PORTFOLIO_DATA, FILE_TREE, FileItem } from "@/data/portfolioData";
@@ -287,10 +289,17 @@ export function IDELayout() {
           onOpenContact={() => setIsContactOpen(true)}
         />
 
-        {/* Classic Apple Hello / Namaste Hero */}
+        {/* Classic Apple Hello / Namaste Hero & Draggable Sticky Notes */}
         <AnimatePresence>
           {isMinimized && (
-            <AppleHelloHero onOpenIDE={handleOpenIDE} />
+            <>
+              <AppleHelloHero 
+                onOpenIDE={handleOpenIDE} 
+                onOpenSearch={() => setIsSearchOpen(true)}
+                onOpenResumePreview={() => setIsResumePreviewOpen(true)}
+              />
+              <DesktopStickyNotes />
+            </>
           )}
         </AnimatePresence>
 
@@ -444,6 +453,9 @@ export function IDELayout() {
           onRunBuild={handleRunBuild}
           onOpenContact={() => setIsContactOpen(true)}
           onOpenQR={() => setIsQROpen(true)}
+          onOpenResumePreview={() => setIsResumePreviewOpen(true)}
+          onCycleTheme={handleCycleTheme}
+          onOpenIDE={handleOpenIDE}
         />
 
         <ContactModal
@@ -469,6 +481,14 @@ export function IDELayout() {
           onSelectTheme={(t) => setCurrentTheme(t)}
           isSoundEnabled={isSoundEnabled}
           onToggleSound={handleToggleSound}
+        />
+
+        {/* Nostalgic Assistant 97 Easter Egg */}
+        <BillAssistant
+          onOpenResumePreview={() => setIsResumePreviewOpen(true)}
+          onOpenContact={() => setIsContactOpen(true)}
+          onRunBuild={handleRunBuild}
+          onOpenIDE={handleOpenIDE}
         />
 
       </div>

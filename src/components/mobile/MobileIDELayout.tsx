@@ -98,8 +98,8 @@ export function MobileIDELayout({
 
       {/* Ambient Mobile Background Shapes */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-[-10%] right-[-15%] w-72 h-72 rounded-full bg-rose-600/20 blur-[90px]" />
-        <div className="absolute bottom-[-10%] left-[-15%] w-80 h-80 rounded-full bg-purple-700/20 blur-[100px]" />
+        <div className="absolute top-[-10%] right-[-15%] w-72 h-72 rounded-full bg-amber-500/20 blur-[90px]" />
+        <div className="absolute bottom-[-10%] left-[-15%] w-80 h-80 rounded-full bg-orange-600/15 blur-[100px]" />
         <div className="absolute top-[40%] left-[10%] w-48 h-48 rounded-full bg-sky-500/10 blur-[80px]" />
       </div>
 
